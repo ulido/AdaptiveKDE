@@ -96,7 +96,7 @@ def ssvkernel(x, tin=None, M=80, nbs=100, WinFunc='Boxcar'):
     thist = np.concatenate((t, (t[-1]+dt)[np.newaxis]))
     y_hist = np.histogram(x_ab, thist-dt/2)[0] / dt
     L = y_hist.size
-    N = sum(y_hist * dt).astype(float)
+    N = float(sum(y_hist * dt))
 
     # initialize window sizes
     W = logexp(np.linspace(ilogexp(5 * dt), ilogexp(T), M))
@@ -238,10 +238,10 @@ def fftkernel(x, w):
     L = x.size
     Lmax = L + 3 * w
     n = int(2 ** np.ceil(np.log2(Lmax)))
-    X = np.fft.fft(x, n.astype(int))
+    X = np.fft.fft(x, n)
 
     # generate kernel domain
-    f = np.linspace(0, n-1, n.astype(int)) / n
+    f = np.linspace(0, n-1, n) / n
     f = np.concatenate((-f[0: int(n / 2 + 1)],
                         f[1: int(n / 2 - 1 + 1)][::-1]))
 
@@ -260,11 +260,11 @@ def fftkernelWin(x, w, WinFunc):
     L = x.size
     Lmax = L + 3 * w
     n = int(2 ** np.ceil(np.log2(Lmax)))
-    X = np.fft.fft(x, n.astype(int))
+    X = np.fft.fft(x, n)
 
     # generate kernel domain
 
-    f = np.linspace(0, n-1, n.astype(int)) / n
+    f = np.linspace(0, n-1, n) / n
     f = np.concatenate((-f[0: int(n / 2 + 1)],
                         f[1: int(n / 2 - 1 + 1)][::-1]))
     t = 2 * np.pi * f
